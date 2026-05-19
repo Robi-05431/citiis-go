@@ -1,118 +1,118 @@
 <?php
 
-namespace App\Http;
+// namespace App\Http;
 
-use Illuminate\Foundation\Http\Kernel as HttpKernel;
+// use Illuminate\Foundation\Http\Kernel as HttpKernel;
 
-class Kernel extends HttpKernel
-{
-    /**
-     * Global HTTP Middleware
-     */
-    protected $middleware = [
+// class Kernel extends HttpKernel
+// {
+//     /**
+//      * Global HTTP Middleware
+//      */
+//     protected $middleware = [
 
-        // \App\Http\Middleware\TrustHosts::class,
+//         // \App\Http\Middleware\TrustHosts::class,
 
-        \App\Http\Middleware\TrustProxies::class,
+//         \App\Http\Middleware\TrustProxies::class,
 
-        \Illuminate\Http\Middleware\HandleCors::class,
+//         \Illuminate\Http\Middleware\HandleCors::class,
 
-        \App\Http\Middleware\PreventRequestsDuringMaintenance::class,
+//         \App\Http\Middleware\PreventRequestsDuringMaintenance::class,
 
-        \Illuminate\Foundation\Http\Middleware\ValidatePostSize::class,
+//         \Illuminate\Foundation\Http\Middleware\ValidatePostSize::class,
 
-        \App\Http\Middleware\TrimStrings::class,
+//         \App\Http\Middleware\TrimStrings::class,
 
-        \Illuminate\Foundation\Http\Middleware\ConvertEmptyStringsToNull::class,
-    ];
+//         \Illuminate\Foundation\Http\Middleware\ConvertEmptyStringsToNull::class,
+//     ];
 
-    /**
-     * Route Middleware Groups
-     */
-    protected $middlewareGroups = [
+//     /**
+//      * Route Middleware Groups
+//      */
+//     protected $middlewareGroups = [
 
-        'web' => [
+//         'web' => [
 
-            \App\Http\Middleware\EncryptCookies::class,
+//             \App\Http\Middleware\EncryptCookies::class,
 
-            \Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse::class,
+//             \Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse::class,
 
-            \Illuminate\Session\Middleware\StartSession::class,
+//             \Illuminate\Session\Middleware\StartSession::class,
 
-            \Illuminate\View\Middleware\ShareErrorsFromSession::class,
+//             \Illuminate\View\Middleware\ShareErrorsFromSession::class,
 
-            \App\Http\Middleware\VerifyCsrfToken::class,
+//             \App\Http\Middleware\VerifyCsrfToken::class,
 
-            \Illuminate\Routing\Middleware\SubstituteBindings::class,
-        ],
+//             \Illuminate\Routing\Middleware\SubstituteBindings::class,
+//         ],
 
-        'api' => [
+//         'api' => [
 
-            // Jika menggunakan Sanctum aktifkan ini:
-            // \Laravel\Sanctum\Http\Middleware\EnsureFrontendRequestsAreStateful::class,
+//             // Jika menggunakan Sanctum aktifkan ini:
+//             // \Laravel\Sanctum\Http\Middleware\EnsureFrontendRequestsAreStateful::class,
 
-            \Illuminate\Routing\Middleware\ThrottleRequests::class . ':api',
+//             \Illuminate\Routing\Middleware\ThrottleRequests::class . ':api',
 
-            \Illuminate\Routing\Middleware\SubstituteBindings::class,
-        ],
-    ];
+//             \Illuminate\Routing\Middleware\SubstituteBindings::class,
+//         ],
+//     ];
 
-    /**
-     * Route Middleware Aliases
-     */
-    protected $middlewareAliases = [
+//     /**
+//      * Route Middleware Aliases
+//      */
+//     protected $middlewareAliases = [
 
-        /*
-        |--------------------------------------------------------------------------
-        | Default Laravel Middleware
-        |--------------------------------------------------------------------------
-        */
+//         /*
+//         |--------------------------------------------------------------------------
+//         | Default Laravel Middleware
+//         |--------------------------------------------------------------------------
+//         */
 
-        'auth' => \App\Http\Middleware\Authenticate::class,
+//         'auth' => \App\Http\Middleware\Authenticate::class,
 
-        'auth.basic' =>
-            \Illuminate\Auth\Middleware\AuthenticateWithBasicAuth::class,
+//         'auth.basic' =>
+//             \Illuminate\Auth\Middleware\AuthenticateWithBasicAuth::class,
 
-        'auth.session' =>
-            \Illuminate\Session\Middleware\AuthenticateSession::class,
+//         'auth.session' =>
+//             \Illuminate\Session\Middleware\AuthenticateSession::class,
 
-        'cache.headers' =>
-            \Illuminate\Http\Middleware\SetCacheHeaders::class,
+//         'cache.headers' =>
+//             \Illuminate\Http\Middleware\SetCacheHeaders::class,
 
-        'can' =>
-            \Illuminate\Auth\Middleware\Authorize::class,
+//         'can' =>
+//             \Illuminate\Auth\Middleware\Authorize::class,
 
-        'guest' =>
-            \App\Http\Middleware\RedirectIfAuthenticated::class,
+//         'guest' =>
+//             \App\Http\Middleware\RedirectIfAuthenticated::class,
 
-        'password.confirm' =>
-            \Illuminate\Auth\Middleware\RequirePassword::class,
+//         'password.confirm' =>
+//             \Illuminate\Auth\Middleware\RequirePassword::class,
 
-        'precognitive' =>
-            \Illuminate\Foundation\Http\Middleware\HandlePrecognitiveRequests::class,
+//         'precognitive' =>
+//             \Illuminate\Foundation\Http\Middleware\HandlePrecognitiveRequests::class,
 
-        'signed' =>
-            \Illuminate\Routing\Middleware\ValidateSignature::class,
+//         'signed' =>
+//             \Illuminate\Routing\Middleware\ValidateSignature::class,
 
-        'throttle' =>
-            \Illuminate\Routing\Middleware\ThrottleRequests::class,
+//         'throttle' =>
+//             \Illuminate\Routing\Middleware\ThrottleRequests::class,
 
-        'verified' =>
-            \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
+//         'verified' =>
+//             \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
 
-        /*
-        |--------------------------------------------------------------------------
-        | Custom Middleware CitiisGo
-        |--------------------------------------------------------------------------
-        */
+//         /*
+//         |--------------------------------------------------------------------------
+//         | Custom Middleware CitiisGo
+//         |--------------------------------------------------------------------------
+//         */
 
-        'is_admin' =>
-            \App\Http\Middleware\IsAdmin::class,
+//         'is_admin' =>
+//             \App\Http\Middleware\IsAdmin::class,
 
-        'is_pengelola' =>
-            \App\Http\Middleware\IsPengelola::class,
+//         'is_pengelola' =>
+//             \App\Http\Middleware\IsPengelola::class,
 
-        'is_wisatawan' =>
-            \App\Http\Middleware\IsWisatawan::class,
-    ];
-}
+//         'is_wisatawan' =>
+//             \App\Http\Middleware\IsWisatawan::class,
+//     ];
+// }
