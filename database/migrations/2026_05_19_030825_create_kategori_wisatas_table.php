@@ -6,22 +6,18 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
     public function up(): void
     {
-        Schema::create('area_camping', function (Blueprint $table) {
+        Schema::create('kategori_wisata', function (Blueprint $table) {
             $table->id();
-            $table->timestamps();
+            $table->string('nama');
+            $table->string('ikon')->nullable();         // nama icon / path icon
+            $table->text('deskripsi')->nullable();
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
-        Schema::dropIfExists('area_camping');
+        Schema::dropIfExists('kategori_wisata');
     }
 };
