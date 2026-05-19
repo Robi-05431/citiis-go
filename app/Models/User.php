@@ -12,21 +12,27 @@ class User extends Authenticatable
     use HasApiTokens, HasFactory, Notifiable;
 
     protected $fillable = [
-        'name',
+        'nama',           // ← bukan 'name'
         'email',
-        'password',
-        'role',        // <-- tambahkan ini
-        'no_hp',       // sesuaikan dengan kolom di migration kamu
+        'password_hash',  // ← bukan 'password'
+        'no_hp',
         'foto_profil',
+        'role',
+        'status',
     ];
 
     protected $hidden = [
-        'password',
+        'password_hash',  // ← bukan 'password'
         'remember_token',
     ];
 
+    // Beritahu Laravel bahwa kolom password adalah 'password_hash'
+    public function getAuthPassword()
+    {
+        return $this->password_hash;
+    }
+
     protected $casts = [
         'email_verified_at' => 'datetime',
-        'password'          => 'hashed',
     ];
 }

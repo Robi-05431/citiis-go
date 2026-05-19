@@ -10,21 +10,20 @@ use Illuminate\Validation\ValidationException;
 
 class AuthController extends Controller
 {
-    // REGISTER
     public function register(Request $request)
     {
         $request->validate([
-            'name'     => 'required|string|max:100',
+            'nama'     => 'required|string|max:100',
             'email'    => 'required|email|unique:users,email',
             'password' => 'required|string|min:8|confirmed',
             'role'     => 'sometimes|in:wisatawan,pengelola',
         ]);
 
         $user = User::create([
-            'name'     => $request->name,
-            'email'    => $request->email,
-            'password' => Hash::make($request->password),
-            'role'     => $request->role ?? 'wisatawan',
+            'nama'          => $request->nama,
+            'email'         => $request->email,
+            'password_hash' => Hash::make($request->password), // ← kolom asli
+            'role'          => $request->role ?? 'wisatawan',
         ]);
 
         $token = $user->createToken('auth_token')->plainTextToken;
@@ -36,7 +35,6 @@ class AuthController extends Controller
         ], 201);
     }
 
-    // LOGIN
     public function login(Request $request)
     {
         $request->validate([
@@ -46,7 +44,8 @@ class AuthController extends Controller
 
         $user = User::where('email', $request->email)->first();
 
-        if (! $user || ! Hash::check($request->password, $user->password)) {
+        // Gunakan password_hash karena kolom-nya bukan 'password'
+        if (! $user || ! Hash::check($request->password, $user->password_hash)) {
             throw ValidationException::withMessages([
                 'email' => ['Email atau password salah.'],
             ]);
@@ -61,21 +60,15 @@ class AuthController extends Controller
         ]);
     }
 
-    // LOGOUT
     public function logout(Request $request)
     {
         $request->user()->currentAccessToken()->delete();
 
-        return response()->json([
-            'message' => 'Logout berhasil',
-        ]);
+        return response()->json(['message' => 'Logout berhasil']);
     }
 
-    // PROFIL (tes token)
     public function me(Request $request)
     {
-        return response()->json([
-            'user' => $request->user(),
-        ]);
+        return response()->json(['user' => $request->user()]);
     }
 }
