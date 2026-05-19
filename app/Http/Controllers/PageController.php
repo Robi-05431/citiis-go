@@ -4,117 +4,76 @@ namespace App\Http\Controllers;
 
 use Illuminate\View\View;
 
-// Gunakan try-catch agar tidak error jika tabel belum ada di database
-// Jika database belum ada / tabel kosong → otomatis pakai data dummy
-
 class PageController extends Controller
 {
-    // ── Data dummy fallback ───────────────────────────────────────────────────
-    // Dipakai otomatis jika database belum ada atau tabel masih kosong
+    // ===== SHARED DATA =====
 
-    private function dummyPenginapan(): \Illuminate\Support\Collection
-    {
-        return collect([
-            (object)['name' => 'Villa Galunggung A', 'foto' => null, 'tersedia' => true,  'kapasitas' => 6,  'harga_per_malam' => 750000, 'type' => 'Villa'],
-            (object)['name' => 'Bungalow Danau',     'foto' => null, 'tersedia' => true,  'kapasitas' => 4,  'harga_per_malam' => 450000, 'type' => 'Bungalow'],
-            (object)['name' => 'Kamar Standar 01',   'foto' => null, 'tersedia' => false, 'kapasitas' => 2,  'harga_per_malam' => 250000, 'type' => 'Kamar'],
-            (object)['name' => 'Villa Galunggung B', 'foto' => null, 'tersedia' => true,  'kapasitas' => 8,  'harga_per_malam' => 950000, 'type' => 'Villa'],
-        ]);
-    }
+    private array $fasilitas = [
+        ['icon' => '🏕️', 'title' => 'Area Camping',      'desc' => '8 zona camping dengan pemandangan Gunung Galunggung yang memukau'],
+        ['icon' => '🏠', 'title' => 'Penginapan',         'desc' => '12 unit penginapan nyaman dengan berbagai pilihan tipe kamar'],
+        ['icon' => '🎒', 'title' => 'Sewa Peralatan',     'desc' => 'Lengkapi petualangan dengan peralatan camping berkualitas'],
+        ['icon' => '🌊', 'title' => 'Sumber Air Panas',   'desc' => 'Nikmati sensasi berendam di kolam air panas alami'],
+        ['icon' => '🥾', 'title' => 'Jalur Hiking',       'desc' => 'Berbagai jalur hiking untuk semua tingkat kemampuan'],
+        ['icon' => '🍽️', 'title' => 'Restoran & Warung', 'desc' => 'Aneka kuliner lokal dan makanan ringan tersedia di area wisata'],
+    ];
 
-    private function dummyCamping(): \Illuminate\Support\Collection
-    {
-        return collect([
-            (object)['name' => 'Zona Alpha', 'foto' => null, 'tersedia' => true,  'kapasitas_tenda' => 10, 'harga_per_tenda' => 50000, 'fitur' => 'Dekat sumber air'],
-            (object)['name' => 'Zona Beta',  'foto' => null, 'tersedia' => true,  'kapasitas_tenda' => 8,  'harga_per_tenda' => 60000, 'fitur' => 'View Galunggung'],
-            (object)['name' => 'Zona Gamma', 'foto' => null, 'tersedia' => false, 'kapasitas_tenda' => 6,  'harga_per_tenda' => 75000, 'fitur' => 'Private'],
-        ]);
-    }
+    private array $penginapan = [
+        ['name' => 'Villa Galunggung A', 'type' => 'Villa',     'kapasitas' => 6, 'harga' => 'Rp 750.000/malam', 'status' => 'Tersedia', 'img' => '🏡'],
+        ['name' => 'Bungalow Danau',     'type' => 'Bungalow',  'kapasitas' => 4, 'harga' => 'Rp 450.000/malam', 'status' => 'Tersedia', 'img' => '🛖'],
+        ['name' => 'Kamar Standar 01',  'type' => 'Kamar',     'kapasitas' => 2, 'harga' => 'Rp 250.000/malam', 'status' => 'Penuh',    'img' => '🏨'],
+        ['name' => 'Villa Galunggung B', 'type' => 'Villa',     'kapasitas' => 8, 'harga' => 'Rp 950.000/malam', 'status' => 'Tersedia', 'img' => '🏡'],
+    ];
 
-    private function dummyPeralatan(): \Illuminate\Support\Collection
-    {
-        return collect([
-            (object)['name' => 'Tenda Dome 2P',   'foto' => null, 'stok' => 12, 'harga_per_hari' => 80000, 'emoji' => '⛺'],
-            (object)['name' => 'Sleeping Bag',    'foto' => null, 'stok' => 20, 'harga_per_hari' => 35000, 'emoji' => '🛏️'],
-            (object)['name' => 'Kompor Portable', 'foto' => null, 'stok' => 8,  'harga_per_hari' => 40000, 'emoji' => '🔥'],
-            (object)['name' => 'Carrier 60L',     'foto' => null, 'stok' => 15, 'harga_per_hari' => 50000, 'emoji' => '🎒'],
-            (object)['name' => 'Matras Camping',  'foto' => null, 'stok' => 25, 'harga_per_hari' => 20000, 'emoji' => '🟫'],
-            (object)['name' => 'Lampu Tenda',     'foto' => null, 'stok' => 18, 'harga_per_hari' => 25000, 'emoji' => '💡'],
-        ]);
-    }
+    private array $camping = [
+        ['name' => 'Zona Alpha', 'kapasitas' => '10 tenda', 'harga' => 'Rp 50.000/tenda/malam', 'status' => 'Tersedia', 'fitur' => 'Dekat sumber air'],
+        ['name' => 'Zona Beta',  'kapasitas' => '8 tenda',  'harga' => 'Rp 60.000/tenda/malam', 'status' => 'Tersedia', 'fitur' => 'View Galunggung'],
+        ['name' => 'Zona Gamma', 'kapasitas' => '6 tenda',  'harga' => 'Rp 75.000/tenda/malam', 'status' => 'Penuh',    'fitur' => 'Private, akses terbatas'],
+    ];
 
-    // ── Helper: ambil dari DB, fallback ke dummy jika gagal ───────────────────
-    private function getPenginapan(): \Illuminate\Support\Collection
-    {
-        try {
-            $data = \App\Models\Penginapan::orderByDesc('tersedia')->get();
-            return $data->isNotEmpty() ? $data : $this->dummyPenginapan();
-        } catch (\Exception $e) {
-            return $this->dummyPenginapan();
-        }
-    }
+    private array $peralatan = [
+        ['name' => 'Tenda Dome 2P',   'stok' => 12, 'harga' => 'Rp 80.000/hari', 'icon' => '⛺'],
+        ['name' => 'Sleeping Bag',    'stok' => 20, 'harga' => 'Rp 35.000/hari', 'icon' => '🛏️'],
+        ['name' => 'Kompor Portable', 'stok' => 8,  'harga' => 'Rp 40.000/hari', 'icon' => '🔥'],
+        ['name' => 'Carrier 60L',     'stok' => 15, 'harga' => 'Rp 50.000/hari', 'icon' => '🎒'],
+        ['name' => 'Matras Camping',  'stok' => 25, 'harga' => 'Rp 20.000/hari', 'icon' => '🟫'],
+        ['name' => 'Lampu Tenda',     'stok' => 18, 'harga' => 'Rp 25.000/hari', 'icon' => '💡'],
+    ];
 
-    private function getCamping(): \Illuminate\Support\Collection
-    {
-        try {
-            $data = \App\Models\Camping::orderByDesc('tersedia')->get();
-            return $data->isNotEmpty() ? $data : $this->dummyCamping();
-        } catch (\Exception $e) {
-            return $this->dummyCamping();
-        }
-    }
+    private array $hargaTiket = [
+        ['tipe' => 'Dewasa (Weekday)', 'harga' => 'Rp 25.000'],
+        ['tipe' => 'Dewasa (Weekend)', 'harga' => 'Rp 35.000'],
+        ['tipe' => 'Anak-anak',        'harga' => 'Rp 15.000'],
+        ['tipe' => 'Parkir Motor',     'harga' => 'Rp 5.000'],
+        ['tipe' => 'Parkir Mobil',     'harga' => 'Rp 10.000'],
+    ];
 
-    private function getPeralatan(): \Illuminate\Support\Collection
-    {
-        try {
-            $data = \App\Models\Peralatan::orderByDesc('stok')->get();
-            return $data->isNotEmpty() ? $data : $this->dummyPeralatan();
-        } catch (\Exception $e) {
-            return $this->dummyPeralatan();
-        }
-    }
-
-    // ── Pages ─────────────────────────────────────────────────────────────────
+    // ===== PAGES =====
 
     public function beranda(): View
     {
-        return view('pages.beranda', [
-            'penginapan' => $this->getPenginapan(),
-            'camping'    => $this->getCamping(),
-        ]);
-    }
-
-    public function penginapan(): View
-    {
-        return view('pages.penginapan', [
-            'penginapan' => $this->getPenginapan(),
-        ]);
-    }
-
-    public function camping(): View
-    {
-        return view('pages.camping', [
-            'camping' => $this->getCamping(),
-        ]);
-    }
-
-    public function peralatan(): View
-    {
-        return view('pages.peralatan', [
-            'peralatan' => $this->getPeralatan(),
-        ]);
+        return view('pages.beranda', ['fasilitas' => $this->fasilitas]);
     }
 
     public function informasi(): View
     {
         return view('pages.informasi', [
-            'hargaTiket' => [
-                ['tipe' => 'Dewasa (Weekday)', 'harga' => 'Rp 25.000'],
-                ['tipe' => 'Dewasa (Weekend)', 'harga' => 'Rp 35.000'],
-                ['tipe' => 'Anak-anak',        'harga' => 'Rp 15.000'],
-                ['tipe' => 'Parkir Motor',     'harga' => 'Rp 5.000'],
-                ['tipe' => 'Parkir Mobil',     'harga' => 'Rp 10.000'],
-            ],
+            'fasilitas'   => $this->fasilitas,
+            'hargaTiket'  => $this->hargaTiket,
         ]);
+    }
+
+    public function penginapan(): View
+    {
+        return view('pages.penginapan', ['penginapan' => $this->penginapan]);
+    }
+
+    public function camping(): View
+    {
+        return view('pages.camping', ['camping' => $this->camping]);
+    }
+
+    public function peralatan(): View
+    {
+        return view('pages.peralatan', ['peralatan' => $this->peralatan]);
     }
 }
