@@ -5,14 +5,16 @@ namespace App\Http\Middleware;
 use Closure;
 use Illuminate\Http\Request;
 
-class IsAdmin
+class IsPengelolaOrAdmin
 {
     public function handle(Request $request, Closure $next)
     {
-        if (! $request->user() || $request->user()->role !== 'admin') {
+        $user = $request->user();
+
+        if (! $user || ! in_array($user->role, ['pengelola', 'admin'])) {
             return response()->json([
                 'success' => false,
-                'message' => 'Akses ditolak. Hanya admin yang dapat mengakses endpoint ini.',
+                'message' => 'Akses ditolak. Endpoint ini hanya untuk pengelola atau admin.',
             ], 403);
         }
         return $next($request);

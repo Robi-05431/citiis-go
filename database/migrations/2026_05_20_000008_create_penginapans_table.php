@@ -8,20 +8,18 @@ return new class extends Migration
 {
     public function up(): void
     {
-        Schema::create('peralatan', function (Blueprint $table) {
+        Schema::create('penginapan', function (Blueprint $table) {
             $table->id();
             $table->foreignId('wisata_id')->constrained('wisata')->onDelete('cascade');
             $table->string('nama');
             $table->text('deskripsi')->nullable();
-            $table->string('kategori')->nullable();              // tenda, matras, kompor, dll
-            $table->decimal('harga_sewa_per_hari', 10, 2);
-            $table->integer('total_stok');
-            $table->integer('stok_tersedia');                    // stok yang saat ini bisa disewa
-        });
+            $table->string('alamat')->nullable();
+        }
+        );
     }
 
     public function down(): void
     {
-        Schema::dropIfExists('peralatan');
+        Schema::dropIfExists('penginapan');
     }
 };
