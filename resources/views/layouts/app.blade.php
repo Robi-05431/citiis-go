@@ -93,57 +93,43 @@
     @include('components.footer')
 
     <script>
-        // Navbar: check jika bukan beranda, add background by default
+        // Navbar: always colored untuk semua halaman
         const nb = document.getElementById('navbar');
         const isBeranda = window.location.pathname === '/' || window.location.pathname === '';
 
         const onScroll = () => {
             const scrolled = window.scrollY > 60;
 
-            // Jika beranda: transparan hingga scroll
+            // Jika beranda: transparent di atas, background saat scroll
             if (isBeranda) {
-                nb.classList.toggle('bg-white/95', scrolled);
-                nb.classList.toggle('backdrop-blur-md', scrolled);
-                nb.classList.toggle('shadow-[0_1px_0_#E5E7EB]', scrolled);
-                nb.classList.toggle('py-3', scrolled);
-                nb.classList.toggle('py-5', !scrolled);
+                if (scrolled) {
+                    nb.classList.add('bg-gradient-to-r', 'from-brand', 'to-brand-dark', 'backdrop-blur-md', 'shadow-lg', 'py-3');
+                    nb.classList.remove('py-5');
+                } else {
+                    nb.classList.add('py-5');
+                    nb.classList.remove('bg-gradient-to-r', 'from-brand', 'to-brand-dark', 'backdrop-blur-md', 'shadow-lg', 'py-3');
+                }
             } else {
-                // Jika bukan beranda: selalu punya background
-                nb.classList.add('bg-white/95', 'backdrop-blur-md', 'shadow-[0_1px_0_#E5E7EB]', 'py-3');
+                // Jika bukan beranda: selalu berwarna
+                nb.classList.add('bg-gradient-to-r', 'from-brand', 'to-brand-dark', 'shadow-lg', 'py-3');
             }
 
             // Link warna
             document.querySelectorAll('.nav-link').forEach(a => {
-                if (isBeranda) {
-                    a.classList.toggle('text-white/80', !scrolled);
-                    a.classList.toggle('text-gray-600', scrolled);
-                } else {
-                    a.classList.add('text-gray-600');
-                }
+                a.classList.add('text-white');
+                a.classList.remove('text-white/80', 'text-gray-600');
             });
 
             // Logo teks
             document.querySelectorAll('.logo-text').forEach(a => {
-                if (isBeranda) {
-                    a.classList.toggle('text-white', !scrolled);
-                    a.classList.toggle('text-brand-dark', scrolled);
-                } else {
-                    a.classList.add('text-brand-dark');
-                }
+                a.classList.add('text-white');
+                a.classList.remove('text-brand-dark');
             });
 
             // Btn login
             document.querySelectorAll('.btn-login').forEach(a => {
-                if (isBeranda) {
-                    a.classList.toggle('bg-white/15', !scrolled);
-                    a.classList.toggle('border-white/40', !scrolled);
-                    a.classList.toggle('text-white', !scrolled);
-                    a.classList.toggle('bg-transparent', scrolled);
-                    a.classList.toggle('border-brand', scrolled);
-                    a.classList.toggle('text-brand', scrolled);
-                } else {
-                    a.classList.add('bg-transparent', 'border-brand', 'text-brand');
-                }
+                a.classList.add('bg-white/20', 'border-white/40', 'text-white', 'hover:bg-white/30');
+                a.classList.remove('bg-transparent', 'border-brand', 'text-brand');
             });
         };
 
