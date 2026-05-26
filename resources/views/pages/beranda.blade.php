@@ -427,7 +427,7 @@
                             <div class="flex items-center justify-between">
                                 <span class="text-brand-mid font-semibold text-sm">
                                     Rp
-                                    {{ number_format($zona->harga_per_tenda ?? ($zona->harga ?? 0), 0, ',', '.') }}/tenda
+                                    {{ number_format((int)($zona->harga_per_tenda ?? ($zona->harga ?? 0)), 0, ',', '.') }}/tenda
                                 </span>
                                 @if ($zona->tersedia ?? true)
                                     <a href="{{ route('reservasi', ['tipe' => 'camping', 'item' => $zona->name ?? $zona->nama]) }}"
