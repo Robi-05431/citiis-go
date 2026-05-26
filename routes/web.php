@@ -7,7 +7,7 @@ use App\Http\Controllers\AuthController;
 
 Route::get('/',               [PageController::class, 'beranda'])->name('beranda');
 Route::get('/tentang',        [PageController::class, 'tentang'])->name('tentang');     // ← tambah ini
-Route::get('/wisata', [PageController::class, 'wisata'])->name('wisata');
+Route::get('/wisata',         [PageController::class, 'wisata'])->name('wisata');
 Route::get('/informasi',      [PageController::class, 'informasi'])->name('informasi');
 Route::get('/penginapan',     [PageController::class, 'penginapan'])->name('penginapan');
 Route::get('/camping',        [PageController::class, 'camping'])->name('camping');

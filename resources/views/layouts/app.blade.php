@@ -93,35 +93,60 @@
     @include('components.footer')
 
     <script>
-        // Navbar: transparan di hero, putih saat scroll
+        // Navbar: check jika bukan beranda, add background by default
         const nb = document.getElementById('navbar');
+        const isBeranda = window.location.pathname === '/' || window.location.pathname === '';
+
         const onScroll = () => {
             const scrolled = window.scrollY > 60;
-            nb.classList.toggle('bg-white/95', scrolled);
-            nb.classList.toggle('backdrop-blur-md', scrolled);
-            nb.classList.toggle('shadow-[0_1px_0_#E5E7EB]', scrolled);
-            nb.classList.toggle('py-3', scrolled);
-            nb.classList.toggle('py-5', !scrolled);
+
+            // Jika beranda: transparan hingga scroll
+            if (isBeranda) {
+                nb.classList.toggle('bg-white/95', scrolled);
+                nb.classList.toggle('backdrop-blur-md', scrolled);
+                nb.classList.toggle('shadow-[0_1px_0_#E5E7EB]', scrolled);
+                nb.classList.toggle('py-3', scrolled);
+                nb.classList.toggle('py-5', !scrolled);
+            } else {
+                // Jika bukan beranda: selalu punya background
+                nb.classList.add('bg-white/95', 'backdrop-blur-md', 'shadow-[0_1px_0_#E5E7EB]', 'py-3');
+            }
+
             // Link warna
             document.querySelectorAll('.nav-link').forEach(a => {
-                a.classList.toggle('text-white/80', !scrolled);
-                a.classList.toggle('text-gray-600', scrolled);
+                if (isBeranda) {
+                    a.classList.toggle('text-white/80', !scrolled);
+                    a.classList.toggle('text-gray-600', scrolled);
+                } else {
+                    a.classList.add('text-gray-600');
+                }
             });
+
             // Logo teks
             document.querySelectorAll('.logo-text').forEach(a => {
-                a.classList.toggle('text-white', !scrolled);
-                a.classList.toggle('text-brand-dark', scrolled);
+                if (isBeranda) {
+                    a.classList.toggle('text-white', !scrolled);
+                    a.classList.toggle('text-brand-dark', scrolled);
+                } else {
+                    a.classList.add('text-brand-dark');
+                }
             });
+
             // Btn login
             document.querySelectorAll('.btn-login').forEach(a => {
-                a.classList.toggle('bg-white/15', !scrolled);
-                a.classList.toggle('border-white/40', !scrolled);
-                a.classList.toggle('text-white', !scrolled);
-                a.classList.toggle('bg-transparent', scrolled);
-                a.classList.toggle('border-brand', scrolled);
-                a.classList.toggle('text-brand', scrolled);
+                if (isBeranda) {
+                    a.classList.toggle('bg-white/15', !scrolled);
+                    a.classList.toggle('border-white/40', !scrolled);
+                    a.classList.toggle('text-white', !scrolled);
+                    a.classList.toggle('bg-transparent', scrolled);
+                    a.classList.toggle('border-brand', scrolled);
+                    a.classList.toggle('text-brand', scrolled);
+                } else {
+                    a.classList.add('bg-transparent', 'border-brand', 'text-brand');
+                }
             });
         };
+
         window.addEventListener('scroll', onScroll);
         onScroll();
 

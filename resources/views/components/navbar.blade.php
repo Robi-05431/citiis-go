@@ -1,7 +1,7 @@
 @php
     $links = [
         'Beranda' => route('beranda'),
-        'Tentang' => route('informasi'),
+        'Tentang' => route('tentang'),
         'Penginapan' => route('penginapan'),
         'Camping' => route('camping'),
         'Sewa Alat' => route('peralatan'),
@@ -15,8 +15,9 @@
 
             {{-- Logo --}}
             <a href="{{ route('beranda') }}" class="flex items-center gap-2.5">
-                <div class="w-9 h-9 rounded-xl bg-brand flex items-center justify-center flex-shrink-0">
-                    <i class="ti ti-mountain text-white text-lg"></i>
+                <div class="w-9 h-9 rounded-xl flex-shrink-0">
+                    <img src="{{ asset('images/logoCitiisGo.jpeg') }}" alt="Logo Citiis Go"
+                         class="w-full h-full rounded-xl object-contain logo-img transition-all duration-300">
                 </div>
                 <span class="logo-text text-white font-semibold text-lg transition-colors duration-300">
                     Citiis<span class="text-brand-mid">'Go</span>
