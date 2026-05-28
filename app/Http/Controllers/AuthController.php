@@ -33,6 +33,7 @@ class AuthController extends Controller
 
             $request->session()->regenerate();
 
+            // Redirect ke halaman yang diminta sebelumnya, atau ke beranda
             return redirect()->intended(route('beranda'));
         }
 
